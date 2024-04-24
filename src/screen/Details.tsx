@@ -6,6 +6,7 @@ import { SnackbarContext } from '../Context';
 import { Row } from '../Types';
 import FlightImg from '../assets/flight.jpg';
 import CircularLoader from '../component/CircularLoader';
+import { convertToLocalTime } from '../utils/conversion';
 
 const Details = () => {
   const [loader, toggleLoader] = useState<boolean>(false);
@@ -49,7 +50,7 @@ const Details = () => {
           Destination : {data.destination}
         </Typography>
         <Typography variant='subtitle1'>
-          DepartureTime : {data.departureTime}
+          DepartureTime : {convertToLocalTime(data.departureTime || '')}
         </Typography>
         <Typography variant='subtitle1'>Status : {data.status}</Typography>
       </div>

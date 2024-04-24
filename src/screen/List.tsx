@@ -32,6 +32,7 @@ const columns = [
   {
     name: 'Departure Time',
     map: 'departureTime',
+    dataType: 'timestamp',
   },
   {
     name: 'Status',

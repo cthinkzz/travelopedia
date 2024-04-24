@@ -8,6 +8,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { styled } from '@mui/material/styles';
 import { Column, Row } from '../Types';
+import { convertToLocalTime } from '../utils/conversion';
 import TableLoader from './TableLoader';
 interface Props {
   loading?: boolean;
@@ -63,25 +64,28 @@ const TableComponent = ({
                   onClick={() => handleRowClick(row.id)}
                 >
                   {columns.map((column: Column) => {
+                    let value = row[column.map as keyof Row];
+                    if (column.dataType === 'timestamp') {
+                      //@ts-ignore
+                      value = convertToLocalTime(value);
+                    }
                     if (column.type === 'link') {
                       return (
                         <StyledTableCell key={row.id + '-' + column.name}>
-                          <Button>{row[column.map as keyof Row] || '-'}</Button>
+                          <Button>{value}</Button>
                         </StyledTableCell>
                       );
                     }
-                    if (column.type === 'icon') {
+                    if (column.type === 'icon' && value) {
                       return (
                         <StyledTableCell key={row.id + '-' + column.name}>
-                          <Tooltip title={row[column.map as keyof Row]}>
-                            {iconMap[row[column.map as keyof Row]]}
-                          </Tooltip>
+                          <Tooltip title={value}>{iconMap[value]}</Tooltip>
                         </StyledTableCell>
                       );
                     }
                     return (
                       <StyledTableCell key={row.id + '-' + column.name}>
-                        {row[column.map as keyof Row] || '-'}
+                        {value || '-'}
                       </StyledTableCell>
                     );
                   })}
